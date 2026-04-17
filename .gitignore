@@ -8,13 +8,26 @@ out/
 
 ### Logs ###
 *.log
+logs/
 
 ### IDE ###
 .idea/
 *.iml
 .vscode/
+.classpath
+.project
+.settings/
 
 ### Environment ###
 .env
 .env.*
 !.env.example
+
+### OS ###
+Thumbs.db
+
+### Runtime ###
+*.pid
+
+### Local docs ###
+plan.md

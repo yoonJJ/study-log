@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - Form</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css">
+</head>
+<body>
+<main class="container">
+    <header class="header">
+        <h1 th:text="${isEdit} ? '글 수정' : '새 글 작성'">글 작성</h1>
+        <a th:href="@{/posts}">목록으로</a>
+    </header>
+
+    <form class="form"
+          th:action="${isEdit} ? @{|/posts/${postId}|} : @{/posts}"
+          method="post"
+          th:object="${postForm}">
+        <label>
+            제목
+            <input type="text" th:field="*{title}" maxlength="100" required>
+        </label>
+        <label>
+            카테고리
+            <input type="text" th:field="*{categoryName}" maxlength="30" required>
+        </label>
+        <label>
+            상태
+            <select th:field="*{status}">
+                <option th:each="status : ${statuses}" th:value="${status}" th:text="${status}">DRAFT</option>
+            </select>
+        </label>
+        <label for="editor">
+            본문
+            <div id="editor"></div>
+            <textarea id="content" th:field="*{content}" hidden></textarea>
+        </label>
+        <button class="button" type="submit">저장</button>
+    </form>
+</main>
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+<script>
+    const form = document.querySelector(".form");
+    const contentField = document.getElementById("content");
+    const editor = new toastui.Editor({
+        el: document.querySelector("#editor"),
+        height: "420px",
+        initialEditType: "markdown",
+        previewStyle: "vertical",
+        initialValue: contentField.value || ""
+    });
+
+    form.addEventListener("submit", () => {
+        contentField.value = editor.getMarkdown();
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - Detail</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css">
+</head>
+<body>
+<main class="container">
+    <nav class="nav">
+        <a th:href="@{/posts}">목록</a>
+        <a th:href="@{|/posts/${post.id()}/edit|}">수정</a>
+        <form th:action="@{|/posts/${post.id()}/delete|}" method="post">
+            <button class="danger" type="submit">삭제</button>
+        </form>
+    </nav>
+
+    <article class="detail">
+        <div class="meta">
+            <span th:text="${post.categoryName()}">Category</span>
+            <span th:text="${post.status()}">PUBLISHED</span>
+        </div>
+        <h1 th:text="${post.title()}">제목</h1>
+        <div id="viewer"></div>
+        <textarea id="postContent" hidden th:text="${post.content()}"></textarea>
+    </article>
+</main>
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+<script>
+    const markdown = document.getElementById("postContent").value || "";
+    new toastui.Editor.factory({
+        el: document.querySelector("#viewer"),
+        viewer: true,
+        initialValue: markdown
+    });
+</script>
+</body>
+</html>
